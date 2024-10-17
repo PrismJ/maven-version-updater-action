@@ -1,0 +1,32 @@
+# ref: https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
+name: Maven Version Updater Action
+description: A simple GitHub Actions to bump the version of Maven projects
+
+author: Tomáš Střecha
+
+branding:
+  color: green
+  icon: git-commit
+
+inputs:
+  github-token:
+    description: 'A GitHub auth token to be able to commit changes'
+    required: true
+  pom-path:
+    description: 'The relative location of a pom.xml file'
+    required: true
+    default: '.'
+  type:
+    description: 'The type of release, one of: major, minor, patch, release'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Bump Version
+      env:
+        TOKEN: ${{ inputs.github-token }}
+        TYPE: ${{ inputs.type }}
+        BRANCH: ${{ github.head_ref || github.ref_name }}
+      run: ${{github.action_path}}/version-bump.sh
+      shell: bash
