@@ -25,6 +25,7 @@ runs:
   steps:
     - name: Bump Version
       env:
+        POMPATH: ${{ inputs.pom-path }}
         TOKEN: ${{ inputs.github-token }}
         TYPE: ${{ inputs.type }}
         BRANCH: ${{ github.head_ref || github.ref_name }}
