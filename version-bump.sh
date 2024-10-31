@@ -39,7 +39,8 @@ function bump {
       NEW_VERSION="${parts[0]}.${parts[1]}.${bv}"
       ;;
     snapshot)
-      NEW_VERSION="${old}-SNAPSHOT${branch}"
+      local bv=$((parts[2] + 1))
+      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
       ;;
     esac
 }
