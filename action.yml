@@ -18,6 +18,10 @@ inputs:
   type:
     description: 'The type of release, one of: major, minor, patch, snapshot, release'
     required: true
+  bump-version:
+    description: 'Whether the version should be bumped. Only available in the snapshot type.'
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -27,6 +31,7 @@ runs:
         POMPATH: ${{ inputs.pom-path }}
         TOKEN: ${{ inputs.github-token }}
         TYPE: ${{ inputs.type }}
+        BUMP_VERSION: ${{ inputs.bump-version }}
         BRANCH: ${{ github.head_ref || github.ref_name }}
       run: ${{github.action_path}}/version-bump.sh
       shell: bash

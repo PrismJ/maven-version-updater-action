@@ -39,7 +39,11 @@ function bump {
       NEW_VERSION="${parts[0]}.${parts[1]}.${bv}"
       ;;
     snapshot)
-      local bv=$((parts[2] + 1))
+      if [ "$BUMP_VERSION" = true ]; then
+        local bv=$((parts[2] + 1))
+      else
+        local bv=$((parts[2]))
+      fi
       NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
       ;;
     esac
