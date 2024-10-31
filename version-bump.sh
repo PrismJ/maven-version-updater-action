@@ -70,7 +70,7 @@ case "$TYPE" in
     ;;
 esac
 
-if [[ "${BUMP_MODE}" == "snapshot" && "${BRANCH_NAME}" == *-SNAPSHOT ]]; then
+if [[ "${BUMP_MODE}" == "snapshot" && "${OLD_VERSION}" == *-SNAPSHOT ]]; then
     echo "Exiting: Nothing to change."
     exit 0
 fi
