@@ -70,11 +70,6 @@ case "$TYPE" in
     ;;
 esac
 
-if [[ "${BUMP_MODE}" == "snapshot" && "${OLD_VERSION}" == *-SNAPSHOT ]]; then
-    echo "Exiting: Nothing to change."
-    exit 0
-fi
-
 if [[ "${BUMP_MODE}" == "none" ]]
 then
   echo "ERROR: Unknown bump mode"
