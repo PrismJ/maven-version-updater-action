@@ -18,18 +18,25 @@ function bump {
   old="${old%%-*}"
 
   local parts=( ${old//./ } )
+
+  if [[ "$BRANCH" == "main" || "$BRANCH" == "master" || "$BRANCH" == "develop" ]]; then
+    branch=""
+  else
+    branch="-${BRANCH//\//-}"
+  fi
+
   case "$1" in
     major)
       local bv=$((parts[0] + 1))
-      NEW_VERSION="${bv}.0.0-SNAPSHOT"
+      NEW_VERSION="${bv}.0.0-SNAPSHOT${branch}"
       ;;
     minor)
       local bv=$((parts[1] + 1))
-      NEW_VERSION="${parts[0]}.${bv}.0-SNAPSHOT"
+      NEW_VERSION="${parts[0]}.${bv}.0-SNAPSHOT${branch}"
       ;;
     patch)
       local bv=$((parts[2] + 1))
-      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT"
+      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
       ;;
     release)
       NEW_VERSION="${old}"
@@ -38,7 +45,7 @@ function bump {
 }
 
 git config --global user.email github-actions[bot]@users.noreply.github.com
-git config --global user.name Version Updater[bot]
+git config --global user.name github-actions[bot]
 
 OLD_VERSION=$($DIR/get-version.sh)
 BUMP_MODE="none"
@@ -71,10 +78,11 @@ else
   REPO="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   if [ "$TYPE" == "release" ]; then
       git commit -m "release($NEW_VERSION)"
+      git tag $NEW_VERSION
   else
       git commit -m "snapshot($NEW_VERSION)"
   fi
-  git tag $NEW_VERSION
+
   git push $REPO --follow-tags
   git push $REPO --tags
 fi
