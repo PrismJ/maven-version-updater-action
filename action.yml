@@ -16,7 +16,7 @@ inputs:
     required: true
     default: '.'
   type:
-    description: 'The type of release, one of: major, minor, patch, release'
+    description: 'The type of release, one of: major, minor, patch, snapshot, release'
     required: true
 
 runs:

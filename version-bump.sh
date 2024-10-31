@@ -38,6 +38,9 @@ function bump {
       local bv=$((parts[2] + 1))
       NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
       ;;
+    snapshot)
+      NEW_VERSION="${old}"
+      ;;
     release)
       NEW_VERSION="${old}"
       ;;
@@ -59,6 +62,9 @@ case "$TYPE" in
     ;;
   patch)
     BUMP_MODE="patch"
+    ;;
+  snapshot)
+    BUMP_MODE="snapshot"
     ;;
   release)
     BUMP_MODE="release"
