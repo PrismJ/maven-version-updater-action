@@ -28,21 +28,18 @@ function bump {
   case "$1" in
     major)
       local bv=$((parts[0] + 1))
-      NEW_VERSION="${bv}.0.0-SNAPSHOT${branch}"
+      NEW_VERSION="${bv}.0.0"
       ;;
     minor)
       local bv=$((parts[1] + 1))
-      NEW_VERSION="${parts[0]}.${bv}.0-SNAPSHOT${branch}"
+      NEW_VERSION="${parts[0]}.${bv}.0"
       ;;
     patch)
       local bv=$((parts[2] + 1))
-      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
+      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}"
       ;;
     snapshot)
       NEW_VERSION="${old}-SNAPSHOT${branch}"
-      ;;
-    release)
-      NEW_VERSION="${old}"
       ;;
     esac
 }
@@ -66,14 +63,11 @@ case "$TYPE" in
   snapshot)
     BUMP_MODE="snapshot"
     ;;
-  release)
-    BUMP_MODE="release"
-    ;;
 esac
 
 if [[ "${BUMP_MODE}" == "none" ]]
 then
-  echo "ERROR: "
+  echo "ERROR: Unknown bump mode"
   exit 1
 else
   echo $BUMP_MODE "version bump detected"
@@ -82,7 +76,7 @@ else
   mvn --file $POMPATH/pom.xml -q versions:set -DnewVersion="${NEW_VERSION}"
   git add $POMPATH/pom.xml
   REPO="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
-  if [ "$TYPE" == "release" ]; then
+  if [ "$TYPE" != "snapshot" ]; then
       git commit -m "release($NEW_VERSION)"
       git tag $NEW_VERSION
   else
