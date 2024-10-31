@@ -35,8 +35,7 @@ function bump {
       NEW_VERSION="${parts[0]}.${bv}.0"
       ;;
     patch)
-      local bv=$((parts[2] + 1))
-      NEW_VERSION="${parts[0]}.${parts[1]}.${bv}"
+      NEW_VERSION="${old}"
       ;;
     snapshot)
       if [ "$BUMP_VERSION" = true ]; then
