@@ -23,6 +23,7 @@ function bump {
     branch=""
   else
     branch="-${BRANCH//\//-}"
+    branch="${branch,,}"
   fi
 
   case "$1" in
@@ -68,6 +69,11 @@ case "$TYPE" in
     BUMP_MODE="snapshot"
     ;;
 esac
+
+if [[ "${BUMP_MODE}" == "snapshot" && "${BRANCH_NAME}" == *-SNAPSHOT ]]; then
+    echo "Exiting: Nothing to change."
+    exit 0
+fi
 
 if [[ "${BUMP_MODE}" == "none" ]]
 then
