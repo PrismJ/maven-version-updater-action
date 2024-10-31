@@ -39,7 +39,7 @@ function bump {
       NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT${branch}"
       ;;
     snapshot)
-      NEW_VERSION="${old}"
+      NEW_VERSION="${old}-SNAPSHOT${branch}"
       ;;
     release)
       NEW_VERSION="${old}"
